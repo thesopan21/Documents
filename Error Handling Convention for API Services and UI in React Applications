@@ -1,0 +1,39 @@
+
+# Error Handling Convention for API Services and UI in React Applications
+
+In modern frontend applications—especially those built with React and TypeScript—maintaining a clear separation between business logic (like API services) and UI logic (like toast notifications) is critical for scalability and maintainability. This convention outlines how and why error handling should be structured between service layers and UI components.
+
+## 1. Throw error inside service and catch in .tsx component
+
+This is the recommended and scalable approach.
+
+🔧 How it works:
+
+- The API service (service.ts) performs the network call and throws an error if something goes wrong.
+- The component (.tsx) that calls the service wraps it in a try/catch block and handles the UI feedback (e.g., showing a toast or alert).
+
+✅ Why this is better:
+
+- Separation of concerns: Keeps the service layer focused on API communication, and the UI layer focused on user experience.
+- Flexible error handling: Different components can show different error messages even when using the same API service.
+- Scalable: Easy to maintain and extend in large apps with many API consumers.
+- Testability: Each unit (service and UI) can be tested independently.
+
+## 2. Show toast inside service itself
+
+This is a shortcut approach, often used in small projects or early stages.
+
+🔧 How it works:
+
+- The service not only makes the API call, but also shows a toast or error alert directly from inside catch.
+
+⚠️ Why this is discouraged:
+
+- Couples logic and UI: The API service now knows about your UI (like toast notifications), which it shouldn’t.
+- Less reusable: You can’t easily reuse the service in different contexts with different error-handling needs.
+- Difficult to test: UI-related side effects inside a service make unit testing harder.
+
+## 🏁 Final Recommendation
+
+Always throw errors from services and handle them in components.
+This keeps your architecture clean, testable, and easier to maintain as your application grows
